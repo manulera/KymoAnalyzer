@@ -39,8 +39,13 @@ function [] = kym_show(handles)
         p = handles.kymo_lines{handles.currentline}.plot_line('red','LineWidth',5);
         
     else
+        col_ord = get(gca,'ColorOrder');
         for i =1:numel(handles.kymo_lines)
-            p = handles.kymo_lines{i}.plot_line('LineWidth',3);
+            color_ind = mod(i,size(col_ord,1));
+            if ~color_ind
+                color_ind=size(col_ord,1);
+            end
+            p = handles.kymo_lines{i}.plot_line('LineWidth',3,'color',col_ord(color_ind,:));
             p.Color(4) = 0.8;
         end
         if ~isempty(handles.kymo_lines)

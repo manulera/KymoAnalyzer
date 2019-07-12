@@ -1,8 +1,17 @@
 function [] = kymo_extraplot_profile(handles)
-    t = round(get(handles.slider1,'Value'))
+    t = round(get(handles.slider1,'Value'));
+    col_ord = get(gca,'ColorOrder');
+    
     xx = handles.kymo(t,:);
+    plot(imgaussfilt(xx,1),'LineWidth',2,'color','blue')
+    
+    small_kymo = handles.kymo;
+    small_kymo = imgaussfilt(small_kymo,2);
+    xx = small_kymo(t,:);
     
     plot(xx,'LineWidth',2)
+    
+    
     
     if ~isempty(handles.left_edge)
         % edge lines
@@ -16,7 +25,11 @@ function [] = kymo_extraplot_profile(handles)
             kl = handles.kymo_lines{i};
             if kl.y(1)<t && kl.y(end)>t
                 line = interp1(kl.y,kl.x,t,'pchip');
-                plot([line line],[handles.int_low_lim,handles.int_high_lim],'LineWidth',2)
+                color_ind = mod(i,size(col_ord,1));
+                if ~color_ind
+                    color_ind=size(col_ord,1);
+                end
+                plot([line line],[handles.int_low_lim,handles.int_high_lim],'LineWidth',2,'color',col_ord(color_ind,:))
             end
         end
     end
