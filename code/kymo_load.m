@@ -4,13 +4,10 @@ function [ handles ] = kymo_load(handles,path)
 if nargin<2
     [file, path] = uigetfile('*.mat','Locate the .mat file of saved data');
 else
-    target_dir = path(1:end-4);
-    [handles.pathfile,name,ext] = fileparts(path);
-    handles.tif_file = [name,ext];
-    if isdir(target_dir)
-        path = target_dir;
-        file = 'kymo_save.mat';    
-    else
+    handles.pathfile = path;
+    handles.tif_file = 'movie_bleach_corrected_max_kymo.tif';
+    file = 'kymo_save.mat';    
+    if ~isfile([path filesep file])
         handles = kym_import(handles, path);
         return
     end
@@ -22,9 +19,8 @@ if file==0
 end
 path
 load([path filesep file])
-info_file = [handles.pathfile filesep 'info.txt'];
 
-% Copy all the fields from out except for these
+% Copy all the fields from fout except for these
 rem_fields = {'all_kymos','pathfile','current_kymo','mini_video'};
 for r = rem_fields
     if isfield(out,r{1})
@@ -38,8 +34,5 @@ end
 if ~isfield(handles,'shifted')
     handles.shifted = false;
 end
-if isfile(info_file)
-    handles.info = kymo_read_info(info_file);
-else
-    handles.info = [];
-end
+
+handles.info = kymo_read_info(handles.pathfile);

@@ -1,17 +1,26 @@
-function [info] = kymo_read_info(filename)
-    info = struct('resolution',[],'timestep',[],'condition',[]);
+function [info] = kymo_read_info(path)
+    info = struct('resolution',[],'timestep',[]);
     
-    fid = fopen(filename);
+    aa =imfinfo([path filesep 'movie.tif']);
+    info.resolution = 1./aa(1).XResolution;
     
-    tline = fgetl(fid);
-    while ischar(tline)
-        out = split(tline," ");
-        info = setfield(info,out{1},out{2});
-        tline = fgetl(fid);
+    raw = aa(1).ImageDescription;
+    raw = split(raw,newline);
+    
+    
+    % Get the time interval between images
+    for i = 1:numel(raw)
+        if isempty(raw{i})
+            continue
+        end
+        sp = split(raw{i},'=');
+        if strcmp(sp{1},'finterval')
+            info.timestep=str2double(sp{2});
+            break
+        end
     end
     
-    info.resolution = str2double(info.resolution);
-    info.timestep = str2double(info.timestep);
+    
     
 end
 

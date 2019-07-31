@@ -1,6 +1,6 @@
 function [handles] = kymo_findall(handles)
 
-[~,out] = system(['echo ' uigetdir() '/kymos/kymo??.tif']);
+[~,out] = system(['find ' uigetdir() ' -type d -name "kymo_matlab??"']);
 
 all_files = strsplit(out);
 empty_ones = cellfun('isempty',all_files);

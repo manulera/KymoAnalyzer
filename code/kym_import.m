@@ -4,12 +4,9 @@ function [handles] = kym_import(handles,target)
     end
     handles.shifted = false;
     handles.kymo = imread([handles.pathfile filesep handles.tif_file]);
-    info_file = [handles.pathfile filesep 'info.txt'];
-    if isfile(info_file)
-        handles.info = kymo_read_info(info_file);
-    else
-        handles.info = [];
-    end
+    
+    handles.info = kymo_read_info(handles.pathfile);
+    
     handles.kymo_lines = {};
     handles.currentline = 1;
     handles.left_edge = [];
