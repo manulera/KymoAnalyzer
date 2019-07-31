@@ -3,13 +3,14 @@ function [] = kymo_extraplot_profile(handles)
     col_ord = get(gca,'ColorOrder');
     
     xx = handles.kymo(t,:);
-    plot(imgaussfilt(xx,1),'LineWidth',2,'color','blue')
-    
-    small_kymo = handles.kymo;
-    small_kymo = imgaussfilt(small_kymo,2);
-    xx = small_kymo(t,:);
-    
     plot(xx,'LineWidth',2)
+    plot(imgaussfilt(xx,2),'LineWidth',2)
+    
+%     small_kymo = handles.kymo;
+%     small_kymo = imgaussfilt(small_kymo,2);
+%     xx = small_kymo(t,:);
+    
+    
     
     
     
