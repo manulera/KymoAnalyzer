@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 01-May-2019 12:12:29
+% Last Modified by GUIDE v2.5 01-Aug-2019 14:37:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,7 @@ function kymo_analysis_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for kymo_analysis
 handles.output = hObject;
-
+handles.version = 1.0;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -75,13 +75,17 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in butt_left.
 function butt_left_Callback(hObject, eventdata, handles)
-handles.left_edge = kymo_line();
+handles.left_edge = kymo_line(size(handles.kymo,1));
+handles.left_edge.extend_edge(size(handles.kymo,1));
+handles = kymo_measure_speed(handles);
 guidata(hObject, handles);    
 
 
 % --- Executes on button press in butt_right.
 function butt_right_Callback(hObject, eventdata, handles)
-handles.right_edge = kymo_line();
+handles.right_edge = kymo_line(size(handles.kymo,1));
+handles.right_edge.extend_edge(size(handles.kymo,1));
+handles = kymo_measure_speed(handles);
 guidata(hObject, handles);
 
 
@@ -201,18 +205,26 @@ guidata(hObject, handles);
 % --- Executes on button press in butt_align_left.
 function butt_align_left_Callback(hObject, eventdata, handles)
 handles = kymo_align_pole(handles,1);
+kym_show(handles);
 guidata(hObject, handles);
 
 
 % --- Executes on button press in butt_align_right.
 function butt_align_right_Callback(hObject, eventdata, handles)
 handles = kymo_align_pole(handles,0);
+kym_show(handles);
 guidata(hObject, handles);
 
+% --- Executes on button press in butt_align_center.
+function butt_align_center_Callback(hObject, eventdata, handles)
+handles.shifted=0;
+kym_show(handles);
+guidata(hObject, handles);
 
 % --- Executes on button press in butt_assign_left.
 function butt_assign_left_Callback(hObject, eventdata, handles)
 handles.kymo_lines{handles.currentline}.isleft = 1;
+kym_show(handles);
 guidata(hObject, handles);
 
 
@@ -329,3 +341,7 @@ function slider1_CreateFcn(hObject, eventdata, handles)
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
+
+
+
+

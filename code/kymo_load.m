@@ -36,3 +36,4 @@ if ~isfield(handles,'shifted')
 end
 
 handles.info = kymo_read_info(handles.pathfile);
+handles = kymo_update(handles);

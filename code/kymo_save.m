@@ -15,14 +15,10 @@ end
 %% Make the directory to store the analysis
 
 % Check if directory exists
-dirname = [out.pathfile filesep out.tif_file(1:end-4)];
-if ~isdir(dirname)
-    mkdir(dirname)
-end
 
 
 
 % Save handles
-save([dirname filesep 'kymo_save.mat'],'out')
+save([out.pathfile filesep 'kymo_save.mat'],'out')
 warndlg('Data saved')
 
