@@ -4,6 +4,7 @@ function [  ] = kymo_extraplot( handles, what )
     res = handles.info.resolution;
     yl1 = 0;
     yl2 = inf;
+    hold off
     cla
     hold on
     switch what
@@ -36,6 +37,6 @@ function [  ] = kymo_extraplot( handles, what )
             
     end
     xlim([0,inf])
-    ylim([yl1,yl2])
+%     ylim([yl1,yl2])
 end
 

@@ -6,6 +6,8 @@ function [ handles ] = kymo_measure_speed( handles )
             handles.kymo_lines{i}.calc_speed(handles);
         end
     end
-    handles.spindle_length = handles.right_edge.x - handles.left_edge.x;
+    if ~isempty(handles.right_edge)&&~isempty(handles.left_edge)
+        handles.spindle_length = handles.right_edge.x - handles.left_edge.x;
+    end
 end
 

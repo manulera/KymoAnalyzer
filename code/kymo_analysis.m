@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 01-Aug-2019 14:37:29
+% Last Modified by GUIDE v2.5 01-Aug-2019 16:10:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -223,14 +223,14 @@ guidata(hObject, handles);
 
 % --- Executes on button press in butt_assign_left.
 function butt_assign_left_Callback(hObject, eventdata, handles)
-handles.kymo_lines{handles.currentline}.isleft = 1;
+[handles] = kymo_reassing_line(handles,1);
 kym_show(handles);
 guidata(hObject, handles);
 
 
 % --- Executes on button press in butt_assing_right.
 function butt_assing_right_Callback(hObject, eventdata, handles)
-handles.kymo_lines{handles.currentline}.isleft = 0;
+[handles] = kymo_reassing_line(handles,0);
 kym_show(handles);
 guidata(hObject, handles);
 
@@ -307,9 +307,9 @@ switch eventdata.Key
     case 'f'    
         handles = kym_addline(handles);
     case 'leftarrow'    
-        handles.kymo_lines{handles.currentline}.isleft = 1;
+        [handles] = kymo_reassing_line(handles,1);
     case 'rightarrow'    
-        handles.kymo_lines{handles.currentline}.isleft = 0;
+        [handles] = kymo_reassing_line(handles,0);
     case 'x'    
         handles.kymo_lines(handles.currentline)=[];
         handles = kymo_move(handles,0);
@@ -343,5 +343,21 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
+% --- Executes on selection change in menu_kymo.
+function menu_kymo_Callback(hObject, eventdata, handles)
 
+handles.kymo = imread([handles.pathfile filesep handles.menu_kymo.String{handles.menu_kymo.Value}]);
+kym_show(handles);
+guidata(hObject, handles);
 
+% --- Executes during object creation, after setting all properties.
+function menu_kymo_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to menu_kymo (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

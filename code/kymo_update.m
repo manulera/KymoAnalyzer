@@ -11,6 +11,7 @@ function [h] = kymo_update(h)
             h.left_edge.interpolate(size(h.kymo,1))
             h.left_edge.extend_edge(size(h.kymo,1))
         end
+        h = kymo_measure_speed(h);
     end
 end
 
