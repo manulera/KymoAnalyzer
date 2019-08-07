@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 01-Aug-2019 16:10:50
+% Last Modified by GUIDE v2.5 06-Aug-2019 14:28:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -361,3 +361,8 @@ function menu_kymo_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in butt_open_video.
+function butt_open_video_Callback(hObject, eventdata, handles)
+system(['open ' handles.pathfile filesep 'movie_bleach_corrected.tif']);
