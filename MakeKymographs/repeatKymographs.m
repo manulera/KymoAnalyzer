@@ -29,8 +29,8 @@ hold on
 scatter(xc,yc)
 
 
-linear_fits = dlmread([folder filesep 'linear_fits.txt'],' ');
 linear_fits_smooth = dlmread([folder filesep 'linear_fits_smooth.txt'],' ');
+% linear_fits_smooth = dlmread([folder filesep 'linear_fits_smooth.txt'],' ');
 
 [im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear_fits_smooth,'mean');
 

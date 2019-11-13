@@ -29,7 +29,7 @@ for i = ave_slice+1:2*ave_slice+1:nb_frames
     end
     ima = mean(movie(:,:,i-ave_slice:i+ave_slice),3);
     do_parabolla = i>=parabolla_frame;
-    [pars] = strongestLineAngleCurve(ima,mask,background(i),[sugg_ang,xc,yc,0],do_parabolla);
+    [pars] = weightedOrthogonalFit(ima,mask,background(i),[sugg_ang,xc,yc,0],do_parabolla,1);
     linear_fits_help = [linear_fits_help;pars];
     linear_fits_ind = [linear_fits_ind i];
 end
@@ -44,7 +44,7 @@ for i = 1:nb_frames
     ima = movie(:,:,i);
     do_parabolla = i>=parabolla_frame;
     jj = find(i<=linear_fits_ind,true,'first');
-    [pars] = strongestLineAngleCurve(ima,mask,background(i),linear_fits_help(jj,:),do_parabolla);
+    [pars] = weightedOrthogonalFit(ima,mask,background(i),linear_fits_help(jj,:),do_parabolla,1);
     if ~do_parabolla
         pars(4)=0;
     end

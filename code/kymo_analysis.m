@@ -53,6 +53,12 @@ function kymo_analysis_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to kymo_analysis (see VARARGIN)
 
 % Choose default command line output for kymo_analysis
+if numel(varargin)==1
+    handles = kymo_load(handles,fileparts(varargin{1}));
+    handles = kymo_post_load(handles);
+    handles.shifted=0;
+    kym_show(handles);
+end
 handles.output = hObject;
 handles.version = 1.0;
 % Update handles structure
@@ -134,6 +140,8 @@ kymo_save(handles);
 % --- Executes on button press in butt_load.
 function butt_load_Callback(hObject, eventdata, handles)
 handles = kymo_load(handles);
+handles = kymo_post_load(handles);
+handles.shifted=0;
 kym_show(handles);
 guidata(hObject, handles);
 
@@ -366,3 +374,4 @@ end
 % --- Executes on button press in butt_open_video.
 function butt_open_video_Callback(hObject, eventdata, handles)
 system(['open ' handles.pathfile filesep 'movie_bleach_corrected.tif']);
+system(['open ' handles.pathfile]);
