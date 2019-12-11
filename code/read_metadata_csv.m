@@ -10,7 +10,7 @@ function [value_laser] = read_metadata_csv(file)
                     dummy = split(tline,',');
                     value_laser = str2double(dummy{2});
                 end
-                disp(tline)
+%                 disp(tline)
                 break
             end
         end

@@ -34,9 +34,11 @@ function [  ] = kymo_extraplot( handles, what )
             kymo_extraplot_profile(handles);
             yl1=handles.int_low_lim;
             yl2= handles.int_high_lim;
+%             ylim([yl1,yl2])
             
     end
     xlim([0,inf])
+    ylim([0,inf])
 %     ylim([yl1,yl2])
 end
 

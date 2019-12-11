@@ -10,11 +10,16 @@ all_files2 = {};
 for i = 1:numel(all_files)
     f = all_files{i};
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
-    if isempty(strfind(meta_file.name,'TP1057'))
-        continue
+%     if isempty(strfind(meta_file.name,'TP1057'))
+%         continue
+%     end
+
+    metadata_file = [f filesep '..' filesep '..' filesep meta_file.name];
+    if isfile(metadata_file)
+        LP = read_metadata_csv(metadata_file);
+    else
+        error(['Metadata file ' metadata_file ' not found'])
     end
-    
-    LP = read_metadata_csv([f filesep '..' filesep '..' filesep meta_file.name]);
     
     
     info = kymo_read_info(f);
