@@ -37,6 +37,28 @@ methods
         len = sign*(obj.x-kymo_edge.x(obj.y));
     end
     
+    function len = mt_length_from_center(obj,handles)
+        % Length of the microtubule from the center
+        
+        if ~obj.isleft
+            sign=1;
+        else
+            sign=-1;
+        end
+        center=(handles.left_edge.x(obj.y) + handles.right_edge.x(obj.y))/2;
+        len = sign*(obj.x-center);
+    end
+        
+    function out = net_growth(obj)
+        if ~obj.isleft
+            sign=1;
+        else
+            sign=-1;
+        end
+        out = sign*(obj.x(end)-obj.x(1));
+    end
+        
+    
     function calc_speed(obj,handles)
         len = mt_length(obj,handles);
         pf = polyfit(obj.y,len,1);        

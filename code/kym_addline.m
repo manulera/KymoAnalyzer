@@ -11,5 +11,11 @@ function [h] = kym_addline(h)
     h.kymo_lines{end}.apply_shift(h);
     h.kymo_lines{end}.calc_speed(h);
     
+    if h.kymo_lines{end}.speed<0
+        h.kymo_lines{end}.isleft = ~h.kymo_lines{end}.isleft;
+        h.kymo_lines{end}.apply_shift(h);
+        h.kymo_lines{end}.calc_speed(h);
+    end
+    
 end
 

@@ -10,9 +10,9 @@ all_files2 = {};
 for i = 1:numel(all_files)
     f = all_files{i};
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
-%     if isempty(strfind(meta_file.name,'TP1057'))
-%         continue
-%     end
+    if isempty(strfind(meta_file.name,'TP4907'))
+        continue
+    end
 
     metadata_file = [f filesep '..' filesep '..' filesep meta_file.name];
     if isfile(metadata_file)
