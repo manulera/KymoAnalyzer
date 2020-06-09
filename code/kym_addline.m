@@ -14,7 +14,7 @@ function [h] = kym_addline(h)
     
     % Automatically assing left right based on the speed.
     if h.kymo_lines{end}.speed<0
-        kymo_reassing_line(h,0);
+        kymo_reassing_line(h,~h.kymo_lines{end}.isleft);
     end
     
 end
