@@ -321,6 +321,10 @@ switch eventdata.Key
     case 'x'    
         handles.kymo_lines(handles.currentline)=[];
         handles = kymo_move(handles,0);
+    case 's'    
+        kymo_save(handles);
+    case 'space'
+        handles = kymo_select(handles,1);
 end
 
 kym_show(handles);

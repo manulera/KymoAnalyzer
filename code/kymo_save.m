@@ -16,9 +16,9 @@ end
 
 % Check if directory exists
 
-
-
 % Save handles
 save([out.pathfile filesep 'kymo_save.mat'],'out')
-warndlg('Data saved')
+
+axes(handles.ax_main)
+text(50,50,'Data saved','Color','yellow','FontSize',30)
 

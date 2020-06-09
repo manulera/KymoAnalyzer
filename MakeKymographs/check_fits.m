@@ -100,6 +100,7 @@ function slider1_Callback(hObject, eventdata, handles)
     
     plot(x,y)
     scatter(pars(2),pars(3))
+    text(20,20,num2str(t),'Fontsize',20,'Color','yellow')
 
 
 

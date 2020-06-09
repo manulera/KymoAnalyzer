@@ -9,7 +9,13 @@ function [h] = kym_addline(h)
     end
     
     h.kymo_lines{end}.apply_shift(h);
+    
     h.kymo_lines{end}.calc_speed(h);
+    
+    % Automatically assing left right based on the speed.
+    if h.kymo_lines{end}.speed<0
+        kymo_reassing_line(h,0);
+    end
     
 end
 
