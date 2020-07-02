@@ -6,14 +6,20 @@ properties
     y
     isleft
     speed
+    is_special
 end
 
 methods
     %% Constructor and related
-    function obj = kymo_line(ima_size)
+    function obj = kymo_line(ima_size,is_special)
+        if nargin<2||isempty(is_special)
+            is_special = false;
+        end
+            
         [obj.x,obj.y] = getpts();
         obj.isleft = 1;
         obj.interpolate(ima_size);
+        obj.is_special=is_special;
     end
     function obj = hard_copy(obj,other)
         obj.x = other.x;
@@ -21,7 +27,16 @@ methods
         obj.isleft = other.isleft;
     end
     function p = plot_line(obj,shifter,varargin)
-        p = plot(abs(obj.x+shifter(obj.y)),obj.y,varargin{:});
+        if obj.is_special==1
+            ls = ':';
+        elseif obj.is_special==2
+            ls = '--';
+        else
+            ls = '-';
+        end
+        in_var = [varargin 'LineStyle' ls];
+        p = plot(abs(obj.x+shifter(obj.y)),obj.y,in_var{:});
+        
     end
     function len = mt_length(obj,handles)
         % Length of the microtubule from the edge

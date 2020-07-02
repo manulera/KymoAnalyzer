@@ -1,7 +1,10 @@
-function [h] = kym_addline(h)
+function [h] = kym_addline(h,is_special)
+    if nargin<2||isempty(is_special)
+        is_special=false;
+    end
     axes(h.ax_main)
     
-    h.kymo_lines{end+1}= kymo_line(size(h.kymo,1));
+    h.kymo_lines{end+1}= kymo_line(size(h.kymo,1),is_special);
     
     h.currentline = numel(h.kymo_lines);
     if ~iscell(h.kymo_lines)

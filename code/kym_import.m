@@ -16,6 +16,7 @@ function [handles] = kym_import(handles,target)
     handles.info = kymo_read_info(handles.pathfile);
     
     handles.kymo_lines = {};
+    handles.special_lines = {};
     handles.currentline = 1;
     handles.left_edge = [];
     handles.right_edge = [];

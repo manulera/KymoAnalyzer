@@ -6,6 +6,7 @@ movie = readTiff([folder filesep 'movie.tif']);
 
 % Load the mask
 mask = ~logical(readTiff([folder filesep 'mask.tif']));
+
 % Keep the biggest region in the mask (Some times there are tiny bits left out)
 mask = bwareafilt(mask,1);
 
@@ -27,6 +28,10 @@ hold on
 [xc,yc]=imageCenterOfMass(max(movie_sub,[],3).*mask);
 
 scatter(xc,yc)
+
+if isfile([folder filesep 'extra_mask.tif'])
+    mask = mask & logical(readTiff([folder filesep 'extra_mask.tif']));
+end
 %% Get the linear fits and the centers of all the kymos
 if isfile([folder filesep 'settings.txt'])
     parabolla_frame=csvread([folder filesep 'settings.txt']);

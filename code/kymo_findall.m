@@ -10,9 +10,18 @@ all_files2 = {};
 for i = 1:numel(all_files)
     f = all_files{i};
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
-    if isempty(strfind(meta_file.name,'TP4907'))
+%     if isempty(strfind(meta_file.name,'TP4914'))
+%         continue
+%     end
+    if contains(f,'AP5533')
         continue
     end
+
+
+    % Only the empty ones
+%     if isfile([f filesep 'kymo_save.mat'])
+%         continue
+%     end
 
     metadata_file = [f filesep '..' filesep '..' filesep meta_file.name];
     if isfile(metadata_file)

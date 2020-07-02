@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 06-Aug-2019 14:28:08
+% Last Modified by GUIDE v2.5 02-Jul-2020 11:56:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -377,5 +377,23 @@ end
 
 % --- Executes on button press in butt_open_video.
 function butt_open_video_Callback(hObject, eventdata, handles)
-system(['open ' handles.pathfile filesep 'movie_bleach_corrected.tif']);
-system(['open ' handles.pathfile]);
+% system(['open ' handles.pathfile filesep 'movie_bleach_corrected.tif']);
+% system(['open ' handles.pathfile]);
+repeatSmartKymo(handles.pathfile);
+cd(handles.pathfile);
+check_fits('movie.tif','linear_fits_smooth.txt','mask.tif');
+
+
+
+% --- Executes on button press in butt_special_line.
+function butt_special_line_Callback(hObject, eventdata, handles)
+handles = kym_addline(handles,1);
+kym_show(handles);
+guidata(hObject, handles);
+
+
+% --- Executes on button press in butt_shrinking_line.
+function butt_shrinking_line_Callback(hObject, eventdata, handles)
+handles = kym_addline(handles,2);
+kym_show(handles);
+guidata(hObject, handles);

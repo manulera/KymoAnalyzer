@@ -15,7 +15,7 @@ end
 
 
 % Chop the kymograph
-logic = ~isnan(kymo) & kymo>0;
+logic = ~isnan(kymo) & kymo~=0;
 
 keep = find(sum(logic)>20);
 

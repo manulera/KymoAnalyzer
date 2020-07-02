@@ -7,8 +7,9 @@ else
     handles.pathfile = path;
     handles.tif_file = 'movie_bleach_corrected_mean_kymo.tif';
     file = 'kymo_save.mat';    
+    handles = kym_import(handles, path);
     if ~isfile([path filesep file])
-        handles = kym_import(handles, path);
+%         handles = kym_import(handles, path);
         return
     end
 end

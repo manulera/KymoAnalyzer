@@ -27,6 +27,8 @@ for i = ave_slice+1:2*ave_slice+1:nb_frames
     if i+ave_slice>nb_frames
         break
     end
+    % uncommenting this might fix
+%     i = ave_slice+1;
     ima = mean(movie(:,:,i-ave_slice:i+ave_slice),3);
     do_parabolla = i>=parabolla_frame;
     [pars] = weightedOrthogonalFit(ima,mask,background(i),[sugg_ang,xc,yc,0],do_parabolla,1);
