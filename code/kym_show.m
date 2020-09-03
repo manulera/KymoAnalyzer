@@ -23,8 +23,17 @@ function [] = kym_show(handles)
         ima = handles.kymo;
     end
     imshow(ima,[handles.int_low_lim, handles.int_high_lim],'InitialMagnification','Fit')
-%     ss = size(ima);
-%     xlim([100,325])
+    ss = size(ima);
+    xlim_low = 0;
+    xlim_high = inf;
+    
+    if ~isempty(handles.edit_xlim_low.String)
+        xlim_low = str2double(handles.edit_xlim_low.String);
+    end
+    if ~isempty(handles.edit_xlim_high.String)
+        xlim_high = str2double(handles.edit_xlim_high.String);
+    end
+    xlim([xlim_low,xlim_high])
     hold on
     t = round(get(handles.slider1,'Value'));
     plot([2,size(handles.kymo,2)-1],[t t],'color','yellow')

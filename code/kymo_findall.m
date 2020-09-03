@@ -10,12 +10,12 @@ all_files2 = {};
 for i = 1:numel(all_files)
     f = all_files{i};
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
-%     if isempty(strfind(meta_file.name,'TP4914'))
-%         continue
-%     end
-    if contains(f,'AP5533')
+    if isempty(strfind(meta_file.name,{'TP1057'}))
         continue
     end
+%     if ~contains(f,'TP4907')
+%         continue
+%     end
 
 
     % Only the empty ones

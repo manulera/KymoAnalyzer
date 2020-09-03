@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 02-Jul-2020 11:56:44
+% Last Modified by GUIDE v2.5 24-Jul-2020 17:07:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -397,3 +397,50 @@ function butt_shrinking_line_Callback(hObject, eventdata, handles)
 handles = kym_addline(handles,2);
 kym_show(handles);
 guidata(hObject, handles);
+
+
+
+function edit_xlim_low_Callback(hObject, eventdata, handles)
+% hObject    handle to edit_xlim_low (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit_xlim_low as text
+%        str2double(get(hObject,'String')) returns contents of edit_xlim_low as a double
+kym_show(handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_xlim_low_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_xlim_low (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit_xlim_high_Callback(hObject, eventdata, handles)
+% hObject    handle to edit_xlim_high (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit_xlim_high as text
+%        str2double(get(hObject,'String')) returns contents of edit_xlim_high as a double
+kym_show(handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function edit_xlim_high_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_xlim_high (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

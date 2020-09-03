@@ -31,6 +31,8 @@ scatter(xc,yc)
 
 if isfile([folder filesep 'extra_mask.tif'])
     mask = mask & logical(readTiff([folder filesep 'extra_mask.tif']));
+    % Keep the biggest mask again
+    mask = bwareafilt(mask,1);
 end
 %% Get the linear fits and the centers of all the kymos
 if isfile([folder filesep 'settings.txt'])
@@ -42,7 +44,6 @@ end
 if parabolla_frame==0
         parabolla_frame = inf;
 end
-
 linear_fits = strongestLines3(movie,mask,background,xc,yc,parabolla_frame);
 %%
 linear_fits_smooth = movmedian(linear_fits,20,1);

@@ -5,7 +5,7 @@ if nargin<2
     [file, path] = uigetfile('*.mat','Locate the .mat file of saved data');
 else
     handles.pathfile = path;
-    handles.tif_file = 'movie_bleach_corrected_mean_kymo.tif';
+    handles.tif_file = 'movie_bleach_corrected_gauss1_max_kymo.tif';
     file = 'kymo_save.mat';    
     handles = kym_import(handles, path);
     if ~isfile([path filesep file])
