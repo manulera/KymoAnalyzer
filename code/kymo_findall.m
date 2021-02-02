@@ -8,12 +8,14 @@ all_files = all_files(~empty_ones);
 % Filter for LP and timestep
 all_files2 = {};
 for i = 1:numel(all_files)
+    
     f = all_files{i};
+    
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
-    if isempty(strfind(meta_file.name,{'TP1057'}))
-        continue
-    end
-%     if ~contains(f,'TP4907')
+%     if isempty(strfind(meta_file.name,{'TP4907'}))
+%         continue
+%     end
+%     if ~contains(f,'TP1057')
 %         continue
 %     end
 
@@ -42,5 +44,6 @@ for i = 1:numel(all_files)
 end
 
 handles.all_kymos = all_files2;
+numel(all_files2)
 handles.current_kymo = 1;
 end

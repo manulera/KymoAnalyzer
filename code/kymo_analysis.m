@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 24-Jul-2020 17:07:44
+% Last Modified by GUIDE v2.5 05-Sep-2020 12:21:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -444,3 +444,9 @@ function edit_xlim_high_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in butt_special_kymo.
+function butt_special_kymo_Callback(hObject, eventdata, handles)
+handles.kymo_is_special=1;
+guidata(hObject, handles);
