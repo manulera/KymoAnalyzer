@@ -4,7 +4,9 @@ function [im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear
     if nargin<4||isempty(profile_width)
         profile_width = 3;
     end
-    nb_frames = size(movie,3);
+    nb_frames = min([size(movie,3),size(linear_fits,1)]);
+    
+    
     
     im_profiles = cell(1,nb_frames);
     xx_profiles = cell(1,nb_frames);

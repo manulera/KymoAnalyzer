@@ -36,8 +36,9 @@ scatter(xc,yc)
 % linear_fits_smooth = dlmread([folder filesep 'linear_fits.txt'],' ');
 linear_fits_smooth = dlmread([folder filesep 'linear_fits_smooth.txt'],' ');
 
+nb_frames = min([nb_frames,size(linear_fits_smooth,1)]);
 %% Get the image profiles
-[im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear_fits_smooth,'mean');
+[im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie(:,:,1:nb_frames),linear_fits_smooth,'mean');
 
 [kymo,centers] = assembleKymo3(im_profiles,xx_profiles,yy_profiles,xc,yc);
 figure;imshow(kymo,[])
@@ -52,6 +53,7 @@ for i =1:numel(dd)
     input_file = [folder filesep input_file];
     
     movie = readTiff(input_file);
+    movie = movie(:,:,1:nb_frames);
     [im_profiles] = profilesFromLines2(movie,linear_fits_smooth,'mean');
     kymo=kymoFromCenters(im_profiles,centers);
     output_file = [input_file(1:end-4) '_mean_kymo.tif' ];

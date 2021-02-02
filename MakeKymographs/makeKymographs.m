@@ -1,5 +1,20 @@
-function [] = makeKymographs(folder)
+function [] = makeKymographs(folder,mode)
+
+if nargin<2||isempty(mode)
+    mode='alp7';
+end
 %% Imports
+
+% Make the segmentation of alp7 if needed
+if strcmp(mode,'alp7')
+    if isfile([folder filesep 'segmented_dots.tif'])
+        segmented_mask=~logical(readTiffStack([folder filesep 'segmented_dots.tif']));
+    else
+        segmented_mask=segmentAlp7Dots(folder);
+    end
+    segmented_mask=double(segmented_mask);
+    segmented_mask(~logical(segmented_mask))=nan;
+end
 
 % Import the movie
 movie = readTiff([folder filesep 'movie.tif']);
@@ -44,7 +59,12 @@ end
 if parabolla_frame==0
         parabolla_frame = inf;
 end
-linear_fits = strongestLines3(movie,mask,background,xc,yc,parabolla_frame);
+if strcmp('alp7',mode)
+    linear_fits = strongestLines3(movie.*segmented_mask,mask,background,xc,yc,parabolla_frame);
+else
+    linear_fits = strongestLines3(movie,mask,background,xc,yc,parabolla_frame);
+end
+
 %%
 linear_fits_smooth = movmedian(linear_fits,20,1);
 if parabolla_frame~=inf
