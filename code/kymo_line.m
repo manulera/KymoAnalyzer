@@ -2,7 +2,9 @@ classdef kymo_line < handle
     
 properties
     %% Main properties
+    % The horizontal axes (space in this case)
     x
+    % The vertical axes (Time in this case)
     y
     isleft
     speed
@@ -26,7 +28,7 @@ methods
         obj.y = other.y;
         obj.isleft = other.isleft;
     end
-    function p = plot_line(obj,shifter,varargin)
+    function p = plot_line(obj,shifter,axis,varargin)
         if obj.is_special==1
             ls = ':';
         elseif obj.is_special==2
@@ -35,7 +37,7 @@ methods
             ls = '-';
         end
         in_var = [varargin 'LineStyle' ls];
-        p = plot(abs(obj.x+shifter(obj.y)),obj.y,in_var{:});
+        p = plot(axis,abs(obj.x+shifter(obj.y)),obj.y,in_var{:});
         
     end
     function len = mt_length(obj,handles)
@@ -92,8 +94,17 @@ methods
             
         interp_x = min_val:max_val;
             
-        obj.x = interp1(obj.y,obj.x,interp_x,'pchip');
+        obj.x = interp1(obj.y,obj.x,interp_x,'linear');
         obj.y = interp_x;
+        % Sometimes the edge values are set to nan by the interpolation
+        if isnan(obj.x(1))
+            obj.x(1)=[];
+            obj.y(1)=[];
+        end
+        if isnan(obj.x(end))
+            obj.x(end)=[];
+            obj.y(end)=[];
+        end
 %         out = zeros(1,ima_size);
 %         out(1:interp_x(1)) = vals(1);
 %         out(interp_x) = vals;
@@ -110,6 +121,8 @@ methods
     end
     
     function apply_shift(obj,h)
+        % If the image of the kymograph is shifted (aligned to one of the
+        % poles), correct the coordinates accordingly.
         if ~h.shifted
             return
         end
@@ -120,8 +133,6 @@ methods
             kymo_edge = size(h.kymo,2);
             obj.x = h.right_edge.x(obj.y) - kymo_edge + obj.x;
         end
-        
-        
     end
 end
 end

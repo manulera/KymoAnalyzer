@@ -1,4 +1,4 @@
-function [] = repeatSmartKymo(folder)
+function [smartkymo] = repeatSmartKymo(folder)
     
 % Import the movie
 movie = readTiff([folder filesep 'movie.tif']);
@@ -33,7 +33,7 @@ linear_fits_smooth = dlmread([folder filesep 'linear_fits_smooth.txt'],' ');
 %% Get the image profiles
 [im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear_fits_smooth,'mean');
 
-[~,centers] = assembleKymo3(im_profiles,xx_profiles,yy_profiles,xc,yc);
+[centers] = findIndexClosestPoint2Polyline(xx_profiles,yy_profiles,xc,yc);
 
 for i = 1:numel(im_profiles)
     nan_values = isnan(im_profiles{i});
@@ -43,6 +43,10 @@ end
 
 x_kymo = kymoFromCenters(xx_profiles,centers);
 y_kymo = kymoFromCenters(yy_profiles,centers);
+
+smartkymo = struct;
+smartkymo.x_kymo = x_kymo;
+smartkymo.y_kymo = y_kymo;
 
 save([folder filesep 'smart_kymo.mat'],'x_kymo','y_kymo')
 

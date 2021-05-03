@@ -1,6 +1,6 @@
 function [handles] = kymo_findall(handles)
 
-[~,out] = system(['find ' uigetdir() ' -type d -name "kymo_matlab??"']);
+[~,out] = system(['find ' uigetdir() ' -type d -name "kymo_matlab*"']);
 
 all_files = strsplit(out);
 empty_ones = cellfun('isempty',all_files);
@@ -12,18 +12,11 @@ for i = 1:numel(all_files)
     f = all_files{i};
     
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
-%     if isempty(strfind(meta_file.name,{'TP4907'}))
-%         continue
-%     end
-%     if ~contains(f,'TP1057')
-%         continue
-%     end
-
-
-    % Only the empty ones
-%     if isfile([f filesep 'kymo_save.mat'])
-%         continue
-%     end
+    % Filtering step
+    filter_str=handles.edit_filter_files.String;
+    if ~isempty(filter_str) && isempty(strfind(meta_file.name,{filter_str}))
+        continue
+    end
 
     metadata_file = [f filesep '..' filesep '..' filesep meta_file.name];
     if isfile(metadata_file)
@@ -34,12 +27,13 @@ for i = 1:numel(all_files)
     
     
     info = kymo_read_info(f);
-    if round(info.timestep)~=4 || LP~=22.5
-        continue
-    else
-        all_files2 = [all_files2 f]; 
-    end
-    
+    all_files2 = [all_files2 f]; 
+%     if round(info.timestep)~=5 || LP~=22.5
+% 
+%         continue
+%     else
+%         all_files2 = [all_files2 f]; 
+%     end
     
 end
 

@@ -6,6 +6,7 @@ if nargin<2
 else
     handles.pathfile = path;
     handles.tif_file = 'movie_bleach_corrected_gauss1_max_kymo.tif';
+    
     file = 'kymo_save.mat';    
     handles = kym_import(handles, path);
     if ~isfile([path filesep file])
@@ -37,4 +38,5 @@ if ~isfield(handles,'shifted')
 end
 
 handles.info = kymo_read_info(handles.pathfile);
-handles = kymo_update(handles);
+
+% handles = kymo_update(handles);

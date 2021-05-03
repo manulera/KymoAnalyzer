@@ -22,7 +22,7 @@ function varargout = kymo_analysis(varargin)
 
 % Edit the above text to modify the response to help kymo_analysis
 
-% Last Modified by GUIDE v2.5 05-Sep-2020 12:21:29
+% Last Modified by GUIDE v2.5 26-Apr-2021 14:11:47
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -135,6 +135,7 @@ guidata(hObject, handles);
 % --- Executes on button press in butt_save.
 function butt_save_Callback(hObject, eventdata, handles)
 kymo_save(handles);
+
 
 
 % --- Executes on button press in butt_load.
@@ -276,6 +277,12 @@ guidata(hObject, handles);
 
 % --- Executes on selection change in menu_plot.
 function menu_plot_Callback(hObject, eventdata, handles)
+value=handles.menu_plot.String{handles.menu_plot.Value};
+
+if strcmp('movie',value)
+    handles=kymo_load_smart_kymo(handles);
+end
+guidata(hObject, handles);
 kym_show(handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -307,6 +314,7 @@ function figure1_KeyPressFcn(hObject, eventdata, handles)
 %	Character: character interpretation of the key(s) that was pressed
 %	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
 % handles    structure with handles and user data (see GUIDATA)
+message='';
 switch eventdata.Key
     case 'a'
         handles = kymo_move(handles,-1);
@@ -314,6 +322,12 @@ switch eventdata.Key
         handles = kymo_move(handles,+1);
     case 'f'    
         handles = kym_addline(handles);
+    case 'q'
+        % Special line
+        handles = kym_addline(handles,1);
+    case 'e'
+        % Shrinking line
+        handles = kym_addline(handles,2);
     case 'leftarrow'    
         [handles] = kymo_reassing_line(handles,1);
     case 'rightarrow'    
@@ -323,11 +337,17 @@ switch eventdata.Key
         handles = kymo_move(handles,0);
     case 's'    
         kymo_save(handles);
+        message='Data saved';
     case 'space'
         handles = kymo_select(handles,1);
+    case '1'
+        handles = kymo_add_membrane_lines(handles,1);
+    case '2'
+        handles = kymo_add_membrane_lines(handles,0);
 end
 
 kym_show(handles);
+text(handles.ax_main,10,10,message,'Color','yellow','FontSize',20)
 guidata(hObject, handles);
 
 
@@ -377,11 +397,12 @@ end
 
 % --- Executes on button press in butt_open_video.
 function butt_open_video_Callback(hObject, eventdata, handles)
-% system(['open ' handles.pathfile filesep 'movie_bleach_corrected.tif']);
+system(['open ' handles.pathfile filesep 'movie.tif']);
 % system(['open ' handles.pathfile]);
-repeatSmartKymo(handles.pathfile);
+% repeatSmartKymo(handles.pathfile);
 cd(handles.pathfile);
-check_fits('movie.tif','linear_fits_smooth.txt','mask.tif');
+system(['open ' handles.pathfile filesep 'movie_membrane.tif']);
+% check_fits('movie.tif','linear_fits_smooth.txt','mask.tif');
 
 
 
@@ -449,4 +470,41 @@ end
 % --- Executes on button press in butt_special_kymo.
 function butt_special_kymo_Callback(hObject, eventdata, handles)
 handles.kymo_is_special=1;
+guidata(hObject, handles);
+
+function edit_filter_files_Callback(hObject, eventdata, handles)
+% hObject    handle to edit_filter_files (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit_filter_files as text
+%        str2double(get(hObject,'String')) returns contents of edit_filter_files as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit_filter_files_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_filter_files (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in butt_membrane_left.
+function butt_membrane_left_Callback(hObject, eventdata, handles)
+handles = kymo_add_membrane_lines(handles,1);
+guidata(hObject, handles);
+
+% --- Executes on button press in butt_membrane_right.
+function butt_membrane_right_Callback(hObject, eventdata, handles)
+handles = kymo_add_membrane_lines(handles,0);
+guidata(hObject, handles);
+
+
+% --- Executes on button press in tog_memb.
+function tog_memb_Callback(hObject, eventdata, handles)
 guidata(hObject, handles);

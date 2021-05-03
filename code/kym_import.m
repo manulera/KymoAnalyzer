@@ -14,12 +14,21 @@ function [handles] = kym_import(handles,target)
     
     handles.menu_kymo.String=st;
     handles.info = kymo_read_info(handles.pathfile);
-    
+%     handles.info.resolution=0.06;
+%     handles.info.timestep=4;
     handles.kymo_lines = {};
     handles.special_lines = {};
     handles.currentline = 1;
     handles.left_edge = [];
     handles.right_edge = [];
     handles.spindle_length = [];
+    
+    if isfield(handles,'left_membrane')
+        handles = rmfield(handles,'left_membrane');
+    end
+    if isfield(handles,'right_membrane')
+        handles = rmfield(handles,'right_membrane');
+    end
+        
 end
 

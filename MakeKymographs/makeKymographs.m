@@ -1,23 +1,41 @@
-function [] = makeKymographs(folder,mode)
+function [] = makeKymographs(folder,config_file)
 
-if nargin<2||isempty(mode)
-    mode='alp7';
+if nargin<2||isempty(config_file)
+        config_file = [folder filesep 'kymo_config.txt'];
+    if ~isfile(config_file)
+        template = '/Users/Manu/Documents/Projects/Matlab/ImageAnalysis/KymoAnalyzer/MakeKymographs/config/config_mal3D.txt';
+        % Copy the config file
+        copyfile(template,config_file);
+    end
+    
+    
 end
+
+config = readConfigFile(config_file);
+
 %% Imports
 
-% Make the segmentation of alp7 if needed
-if strcmp(mode,'alp7')
-    if isfile([folder filesep 'segmented_dots.tif'])
-        segmented_mask=~logical(readTiffStack([folder filesep 'segmented_dots.tif']));
-    else
-        segmented_mask=segmentAlp7Dots(folder);
+% Use a mask for each frame of the movie
+segmented_mask = 1;
+if isfield('movie_mask',config)
+    if strcmp(config.mode,'alp7')
+        if isfile([folder filesep config.movie_mask])
+            segmented_mask=~logical(readTiffStack([folder filesep config.movie_mask]));
+        else
+            segmented_mask=segmentAlp7Dots(folder);
+        end
     end
+    
     segmented_mask=double(segmented_mask);
     segmented_mask(~logical(segmented_mask))=nan;
 end
 
 % Import the movie
-movie = readTiff([folder filesep 'movie.tif']);
+movie = readTiff([folder filesep config.main_movie]);
+
+if strcmp(config.multiply_subsequent,'1')
+    movie=multiplySubsequentMasks(movie);
+end
 
 % Load the mask
 mask = ~logical(readTiff([folder filesep 'mask.tif']));
@@ -59,8 +77,19 @@ end
 if parabolla_frame==0
         parabolla_frame = inf;
 end
-if strcmp('alp7',mode)
+
+if strcmp(config.mode,'alp7')
     linear_fits = strongestLines3(movie.*segmented_mask,mask,background,xc,yc,parabolla_frame);
+elseif strcmp(config.mode,'mal3D')
+    if isfile([folder filesep 'spb_mask.tif'])
+        spb_mask = ~logical(readTiff([folder filesep 'spb_mask.tif']));
+    else
+        spb_mask=1;
+    end
+    figure
+    imshow(spb_mask)
+    [linear_fits,spb_1,spb_2] = findSpindlesSpbsAlp7(movie,mask,background,parabolla_frame,spb_mask);
+    dlmwrite([folder filesep 'spbs.txt'],[spb_1,spb_2])
 else
     linear_fits = strongestLines3(movie,mask,background,xc,yc,parabolla_frame);
 end
@@ -75,32 +104,7 @@ end
 dlmwrite([folder filesep 'linear_fits.txt'],linear_fits,' ');
 dlmwrite([folder filesep 'linear_fits_smooth.txt'],linear_fits_smooth,' ');
 
-[im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear_fits_smooth,'mean');
-
-[kymo,centers] = assembleKymo3(im_profiles,xx_profiles,yy_profiles,xc,yc);
-figure;imshow(kymo,[])
-
 %%
-dd = dir([folder filesep 'movi*.tif']);
-for i =1:numel(dd)
-    input_file = dd(i).name;
-    if contains(input_file,'kymo')
-        continue
-    end
-    
-    input_file = [folder filesep input_file];
-    
-    movie = readTiff(input_file);
-    [im_profiles] = profilesFromLines2(movie,linear_fits_smooth,'mean');
-    kymo=kymoFromCenters(im_profiles,centers);
-    output_file = [input_file(1:end-4) '_mean_kymo.tif' ];
-    imwrite(uint16(kymo),output_file);
-    
-    [im_profiles] = profilesFromLines2(movie,linear_fits_smooth,'max');
-    kymo=kymoFromCenters(im_profiles,centers);
-    output_file = [input_file(1:end-4) '_max_kymo.tif' ];
-    imwrite(uint16(kymo),output_file);
-end
-close all
+repeatKymographs(folder)
 end
 

@@ -34,7 +34,8 @@ linear_fits_smooth = movmedian(linear_fits,20,1);
 %%
 [im_profiles,xx_profiles,yy_profiles,gaus_profiles] = profilesFromLines(movie,linear_fits_smooth,xc,yc,movie_mean);
 %%
-[kymo,centers] = assembleKymo3(im_profiles,xx_profiles,yy_profiles,xc,yc);
+[centers] = findIndexClosestPoint2Polyline(xx_profiles,yy_profiles,xc,yc);
+[kymo,keep]=kymoFromCenters(im_profiles,centers);
 figure;imshow(kymo,[]);hold on; scatter(60,150)
 
 %%

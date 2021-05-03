@@ -17,10 +17,21 @@ function [im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear
     for i = 1:nb_frames
         
         ima = movie(:,:,i);
+    try
         [ss,xx,yy]=multipleImprofileCurve(ima,linear_fits(i,:),profile_width,1,'bicubic');
+    catch
+        error("Error in:\nframe %u\n",i)
+    end
         im_profiles{i}= ss;
         xx_profiles{i}= xx;
         yy_profiles{i}= yy;
+        
+%         cla
+%         imshow(ima,[],'InitialMagnification','fit')
+%         hold on
+%         scatter(xx(4,:),yy(4,:))
+%         pause(0.05)
+%         title(num2str(i))
         
     end
     

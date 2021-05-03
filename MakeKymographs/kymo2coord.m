@@ -10,6 +10,7 @@ for i = 1:numel(kymo_lines)
     x = kymo_lines{i}.x;
     index = find(kymo_lines{i}.y==t);
     if ~isempty(index)
+        limm=size(smart_kymo.x_kymo,2);
         xx(i)=smart_kymo.x_kymo(t,round(x(index)));
         yy(i)=smart_kymo.y_kymo(t,round(x(index)));
     end

@@ -10,4 +10,3 @@ function [ handles ] = kymo_measure_speed( handles )
         handles.spindle_length = handles.right_edge.x - handles.left_edge.x;
     end
 end
-

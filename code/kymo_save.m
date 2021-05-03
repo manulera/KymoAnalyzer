@@ -3,11 +3,12 @@ function [  ] = kymo_save( handles )
 %% Create a structure containing relevant variables
 f = fields(handles);
 % All the variable types we dont want to store
-exclude = {'matlab.ui.Figure','matlab.ui.control.UIControl','matlab.graphics.axis.Axes','matlab.ui.Figure'};
+exclude_class = {'matlab.ui.Figure','matlab.ui.control.UIControl','matlab.graphics.axis.Axes','matlab.ui.Figure'};
+exclude_field = {'movie','mask','smart_kymo','all_kymos','pathfile'};
 out = struct();
 for i = 1:numel(f)
     name = f{i};    
-    if ~any(strcmp(class(handles.(name)),exclude))
+    if ~any(strcmp(class(handles.(name)),exclude_class))&&~any(strcmp(name,exclude_field))
         out.(name) = handles.(name);
     end
 end
@@ -17,8 +18,6 @@ end
 % Check if directory exists
 
 % Save handles
-save([out.pathfile filesep 'kymo_save.mat'],'out')
+save([handles.pathfile filesep 'kymo_save.mat'],'out')
 
-axes(handles.ax_main)
-text(50,50,'Data saved','Color','yellow','FontSize',30)
 

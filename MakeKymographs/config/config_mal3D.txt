@@ -1,0 +1,5 @@
+mode: mal3D
+main_movie: movie_bleach_corrected.tif
+spb_coords_file: spb_coords.txt
+multiply_subsequent: 1
+fits_file: linear_fits_smooth.txt

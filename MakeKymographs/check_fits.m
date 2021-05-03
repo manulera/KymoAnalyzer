@@ -22,7 +22,7 @@ function varargout = check_fits(varargin)
 
 % Edit the above text to modify the response to help check_fits
 
-% Last Modified by GUIDE v2.5 02-Jul-2020 11:45:10
+% Last Modified by GUIDE v2.5 12-Feb-2021 12:12:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,12 +84,18 @@ if isfile('kymo_save.mat')
     linear_fits_smooth = dlmread('linear_fits_smooth.txt',' ');
     
     [im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(handles.movie,linear_fits_smooth,'mean');
-    [kymo,handles.centers] = assembleKymo3(im_profiles,xx_profiles,yy_profiles,handles.xc,handles.yc);
+    [handles.centers] = findIndexClosestPoint2Polyline(xx_profiles,yy_profiles,handles.xc,handles.yc);
     
 end
 
 if isfile('smart_kymo.mat')
     handles.smart_kymo = load('smart_kymo.mat');
+end
+
+if isfile('spbs.txt')
+    handles.spbs = csvread('spbs.txt');
+else
+    handles.spbs = nan(size(handles.movie,3),4);
 end
 
 guidata(hObject, handles);
@@ -112,42 +118,15 @@ varargout{1} = handles.output;
 % --- Executes on slider movement.
 function slider1_Callback(hObject, eventdata, handles)
     t = round(get(handles.slider1,'Value'));
-    axes(handles.axes_main)
+    axes(handles.ax_extra)
     cla
     int_edges= [str2num(handles.textedit_low_int.String),str2num(handles.textedit_high_int.String)];
     imshow(handles.movie(:,:,t).*handles.mask,int_edges,'InitialMagnification','fit')
     hold on
-    pars = handles.fits(t,:);
-    x = linspace(-150,150);
-    y = x.^2*pars(4);
-    
-    theta = -pars(1);
-    R = [cos(theta) -sin(theta); sin(theta) cos(theta)];
-    coords = [x; y]' * R;
-    x = coords(:,1);
-    y = coords(:,2);
-    x = x+pars(2);
-    y = y+pars(3);
-    
-    plot(x,y)
-%     scatter(pars(2),pars(3),'yellow')
+    drawKymoLinesOnFrame(handles,t);
+    scatter(handles.spbs(t,1),handles.spbs(t,2),'r')
+    scatter(handles.spbs(t,3),handles.spbs(t,4),'g')
 
-    text(20,20,num2str(t),'Fontsize',20,'Color','yellow')
-    
-    if ~isempty(handles.left_edge)
-        % Reference point of the kymograph
-        scatter(handles.xc,handles.yc,'red')
-        
-        [xx,yy]=kymo2coord(t,{handles.left_edge handles.right_edge},handles.smart_kymo);
-        
-        scatter(xx,yy,'green');
-        
-        [xx,yy]=kymo2coord(t,handles.kymo_lines,handles.smart_kymo);
-        if handles.butt_dots.Value
-            scatter(xx,yy,400,'yellow');
-        end
-        
-    end
 
 
 
