@@ -76,7 +76,7 @@ figure;imshow(kymo,[])
 dd = dir([folder filesep '*.tif']);
 
 if membrane_only 
-    dd = dir([folder filesep 'probs_membrane.tif']);
+    dd = dir([folder filesep '*_membrane.tif']);
 end
 
 for i =1:numel(dd)

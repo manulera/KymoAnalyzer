@@ -52,12 +52,15 @@ function kymo_analysis_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to kymo_analysis (see VARARGIN)
 
-% Choose default command line output for kymo_analysis
+% You can pass a list of paths
 if numel(varargin)==1
-    handles = kymo_load(handles,fileparts(varargin{1}));
-    handles = kymo_post_load(handles);
-    handles.shifted=0;
-    kym_show(handles);
+    paths_in = varargin{1};
+    real_paths = cell(1,numel(paths_in));
+    for i = 1:numel(paths_in)
+        real_paths{i} = fileparts(paths_in{i});
+    end
+    handles.all_kymos = real_paths;
+    handles.current_kymo = 1;
 end
 handles.output = hObject;
 handles.version = 1.0;

@@ -1,7 +1,7 @@
-found = dir(fullfile('.', ['**' filesep 'probs_membrane.tif']));
+found = dir(fullfile('.', ['**' filesep 'movie_membrane.tif']));
 found_folders = {found.folder};
 for i = 1:numel(found_folders)
-    last_kymo = [found_folders{i} filesep 'probs_membrane_mean_kymo.tif'];
+    last_kymo = [found_folders{i} filesep 'movie_membrane_kymo.tif'];
     if exist(last_kymo,'file')==2
         fprintf('* Skipped: %s\n',found_folders{i})
         continue

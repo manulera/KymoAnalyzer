@@ -13,10 +13,13 @@ for i = 1:numel(all_files)
     
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
     % Filtering step
-    filter_str=handles.edit_filter_files.String;
-    if ~isempty(filter_str) && isempty(strfind(meta_file.name,{filter_str}))
-        continue
+    if isfield(handles,'edit_filter_files')
+        filter_str=handles.edit_filter_files.String;
+        if ~isempty(filter_str) && isempty(strfind(meta_file.name,{filter_str}))
+            continue
+        end
     end
+    
 
     metadata_file = [f filesep '..' filesep '..' filesep meta_file.name];
     if isfile(metadata_file)

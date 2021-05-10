@@ -21,7 +21,12 @@ function [  ] = kymo_extraplot( handles, what )
             end
             for i = 1:numel(handles.kymo_lines)
                 kl = handles.kymo_lines{i};
-                scatter(handles.ax_extra,kl.y(1)*dt,kl.speed*res/dt)
+                if i==handles.currentline
+                    scatter(handles.ax_extra,kl.y(1)*dt,kl.speed*res/dt,'MarkerFaceColor','red')
+                else
+                    scatter(handles.ax_extra,kl.y(1)*dt,kl.speed*res/dt)
+                end
+                
             end
             speed = movmean(diff(handles.spindle_length),60);
             t = (1:numel(speed))*dt;

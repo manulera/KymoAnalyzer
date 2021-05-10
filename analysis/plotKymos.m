@@ -46,7 +46,7 @@ hold on
 clear_events = this_data.is_special==0;
 scatterWithAveLine(this_data(clear_events,:),'length_spindle_start','rescue_respect2center',color_dict,condition_dict,3)
 hline([-1.25,0,1.25],'k:')
-xlim([3,11])
+xlim([3,13])
 legend('Location','Best')
 xlabel(['Spindle length (' 956 'm)'])
 ylabel(['Rescue respect to center (' 956 'm)'])
@@ -57,7 +57,7 @@ figure('Position',[744   630   420   420])
 hold on
 scatterWithAveLine(this_data(clear_events,:),'length_spindle_start','duration',color_dict,condition_dict,3)
 hline([0],'k:')
-xlim([3,11])
+xlim([3,13])
 legend('Location','Best')
 xlabel(['Spindle length (' 956 'm)'])
 ylabel(['Duration (s)'])
@@ -65,9 +65,9 @@ ylabel(['Duration (s)'])
 % figure('Position',[744   630   420   420])
 figure
 hold on
-scatterWithAveLine(this_data,'length_spindle_start','speed_min',color_dict,condition_dict,5)
+scatterWithAveLine(this_data,'length_spindle_start','speed_min',color_dict,condition_dict,5,0:1:12)
 
-xlim([3,11])
+xlim([3,12])
 legend('Location','Best')
 xlabel(['Spindle length (' 956 'm)'])
 ylabel(['Growth speed (' 956 'm/min)'])
@@ -77,26 +77,34 @@ print_pdf([target_folder filesep 'speed.pdf' ])
 % figure('Position',[744   630   420   420])
 figure
 hold on
-scatterWithAveLine(this_data,'rescue_respect2pole','speed_min',color_dict,condition_dict,5,0.5)
+scatterWithAveLine(this_data,'rescue_respect2pole','speed_min',color_dict,condition_dict,5,0:1:6)
 
 xlim([0.5,6])
 legend('Location','Best')
 xlabel(['Rescue respect to pole (' 956 'm)'])
 ylabel(['Growth speed (' 956 'm/min)'])
-print_pdf([target_folder filesep 'speed.pdf' ])
+print_pdf([target_folder filesep 'speed2.pdf' ])
 
 %% Plot the 
 if any(~isnan(this_data.rescue_respect2membrane))
     figure
     hold on
-    scatterWithAveLine(this_data,'rescue_respect2membrane','speed_min',color_dict,condition_dict,10,-4:0.75:2)
+    custom_data = this_data;
+    custom_data.condition_name = custom_data.rescue_inside_membrane;
+    color_dict('before')=color_dict('cdc25-22');
+    color_dict('inside')=color_dict('ase1D');
+    color_dict('outside')=color_dict('p81cls1');
+    condition_dict('before') = 'before';
+    condition_dict('inside') = 'inside';
+    condition_dict('outside') = 'outside';
+    scatterWithAveLine(custom_data,'rescue_respect2pole','speed_min',color_dict,condition_dict,10,-4:0.75:2)
     
-    text(this_data.rescue_respect2membrane,this_data.speed_min,this_data.unique_id)
+%     text(this_data.rescue_respect2membrane,this_data.speed_min,this_data.unique_id)
     
     legend('Location','Best')
     xlabel(['Rescue respect to membrane edge (' 956 'm)'])
     ylabel(['Growth speed (' 956 'm/min)'])
-    xlim([-4,2])
+    xlim([0,5])
 %     print_pdf([target_folder filesep 'speed.pdf' ])
 end
 %%
