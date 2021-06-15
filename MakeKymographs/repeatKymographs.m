@@ -40,9 +40,9 @@ for i = 1:nb_frames
     movie_sub(:,:,i) = d-background(i);
 end
 
-figure
-imshow(max(movie_sub,[],3),[])
-hold on
+% figure
+% imshow(max(movie_sub,[],3),[])
+% hold on
 % Get the center of mass of the movie
 [xc,yc]=imageCenterOfMass(max(movie_sub,[],3).*mask);
 
@@ -71,12 +71,12 @@ nb_frames = min([nb_frames,size(linear_fits_smooth,1)]);
 
 [kymo,keep]=kymoFromCenters(im_profiles,centers);
 
-figure;imshow(kymo,[])
+% figure;imshow(kymo,[])
 
 dd = dir([folder filesep '*.tif']);
 
 if membrane_only 
-    dd = dir([folder filesep '*_membrane.tif']);
+    dd = dir([folder filesep 'probs_membrane.tif']);
 end
 
 for i =1:numel(dd)

@@ -26,15 +26,22 @@ function [] = drawKymoLinesOnFrame(handles,t)
         % Reference point of the kymograph
         scatter(handles.ax_extra,handles.xc,handles.yc,'red')
         
-        [xx,yy]=kymo2coord(t,{handles.left_edge handles.right_edge},handles.smart_kymo);
-        
+        [xx,yy]=kymo2coord(t,{handles.left_edge},handles.smart_kymo);
         scatter(handles.ax_extra,xx,yy,'green');
+        [xx,yy]=kymo2coord(t,{handles.right_edge},handles.smart_kymo);
+        scatter(handles.ax_extra,xx,yy,'magenta');
         
         [xx,yy]=kymo2coord(t,handles.kymo_lines,handles.smart_kymo);
 
         scatter(handles.ax_extra,xx,yy,100,'yellow');
-
-        
     end
+    
+    if isfield(handles,'left_membrane') && isfield(handles,'right_membrane') && ~isempty(handles.left_membrane)
+        [xx,yy]=kymo2coord(t,{handles.left_membrane},handles.smart_kymo);
+        scatter(handles.ax_extra,xx,yy,'green');
+        [xx,yy]=kymo2coord(t,{handles.right_membrane},handles.smart_kymo);
+        scatter(handles.ax_extra,xx,yy,'magenta');
+    end
+    
 end
 

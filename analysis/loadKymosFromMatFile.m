@@ -2,7 +2,6 @@ function [kl_data,spindle_data] = loadKymosFromMatFile(matfile, t_res, x_res)
     
     % Load the kymographs saved as output of collectKymos()
     load(matfile)
-    
     length_variables={'length_start','length_catast','rescue_respect2center',...
     'catast_respect2center','netgrowth','length_spindle_start','length_spindle_catast',...
     'elongation','ave_spindle_length','ave_mt_length'};
@@ -20,7 +19,7 @@ function [kl_data,spindle_data] = loadKymosFromMatFile(matfile, t_res, x_res)
 
     % kl_data.condition_name = reordercats(kl_data.condition_name,{'ctrl','klp9D','cdc25-22','ase1D','ctrl37C'});
     % kl_data.condition_set = reordercats(kl_data.condition_set,{'ctrl_1','klp9D_1','ctrl_2','cdc25-22_2','ctrl_3','ase1D_3','ctrl37C_1'});
-
+    
 
     %% Create extra columns
     nb_obs = size(kl_data,1);
@@ -42,7 +41,9 @@ function [kl_data,spindle_data] = loadKymosFromMatFile(matfile, t_res, x_res)
         kl_data.net_growth_intime{i} = abs(kl.x-kl.x(1))*x_res;
         kl_data.ave_len_respect2center(i) = mean(kl_data.length_respect2center{i});
         kl_data.rescue_respect2pole(i) = kl_data.length_spindle_start(i)-kl_data.length{i}(1);
-
+        % Distance to the closest pole (not just the opposite)
+        kl_data.rescue_respect2pole(i) = min([kl_data.length{i}(1),kl_data.length_spindle_start(i)-kl_data.length{i}(1)]);
+        
         % There should never be more than one
         corresponding_spindle = strcmp(spindle_data.mat_file,kl_data.mat_file{i});
 
@@ -74,24 +75,50 @@ function [kl_data,spindle_data] = loadKymosFromMatFile(matfile, t_res, x_res)
     %             plot(sp.left_edge{1}.x,sp.left_edge{1}.y)
     %             plot(kl.x,kl.y)
                 index_membrane = find(sp.left_membrane{1}.y==kl.y(1));
-
-                if kl.isleft
-                    membrane_edge = sp.left_membrane{1}.x(index_membrane);
-                    kl_data.rescue_respect2membrane(i) = membrane_edge - kl.x(1);
-                else
-                    membrane_edge = sp.right_membrane{1}.x(index_membrane);
-                    kl_data.rescue_respect2membrane(i) = kl.x(1) - membrane_edge;
-                end
-
-                if kl_data.rescue_respect2membrane(i)<=0
+                
+                % Old way (without wrapping)
+%                 if kl.isleft
+%                     membrane_edge = sp.left_membrane{1}.x(index_membrane);
+%                     kl_data.rescue_respect2membrane(i) = membrane_edge - kl.x(1);
+%                 else
+%                     membrane_edge = sp.right_membrane{1}.x(index_membrane);
+%                     kl_data.rescue_respect2membrane(i) = kl.x(1) - membrane_edge;
+%                 end
+%                 if kl_data.rescue_respect2membrane(i)<=0
+%                     kl_data.rescue_inside_membrane{i} = 'inside';
+%                 else
+%                     kl_data.rescue_inside_membrane{i} = 'outside';
+%                 end
+                left_edge = sp.left_membrane{1}.x(index_membrane);
+                right_edge = sp.right_membrane{1}.x(index_membrane);
+                starting_point = kl.x(1);
+                
+                if starting_point>left_edge && starting_point<right_edge
                     kl_data.rescue_inside_membrane{i} = 'inside';
+                    kl_data.rescue_respect2membrane(i) = -min([starting_point - left_edge, right_edge - starting_point]);
                 else
                     kl_data.rescue_inside_membrane{i} = 'outside';
+                    if starting_point<=left_edge
+                        kl_data.rescue_respect2membrane(i) = left_edge-starting_point;
+                    else
+                        kl_data.rescue_respect2membrane(i) = starting_point-right_edge;
+                    end
+                     
                 end
+                
+                
+                
+                
             end
+        else
+            disp(sp.mat_file{1})
         end
         
         %% Annotations
+        % I don't really understand why this inconsistent behaviour happens
+        if isfield(sp,'annotations') && iscell(sp.annotations) && ~isempty(sp.annotations)
+            sp.annotations = sp.annotations{1};
+        end
         
         if any(strcmp('annotations',sp.Properties.VariableNames)) && isfield(sp.annotations,'category')
             kl_data.custom_category{i} = sp.annotations.category;

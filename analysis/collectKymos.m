@@ -1,4 +1,5 @@
 function [kl_data,spindle_data] = collectKymos(sets,conditions,strain_numbers,warning_if)
+
 % We extract the spindle data and the kymolines data in different arrays
 
 spindle_data = {};

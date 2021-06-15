@@ -36,7 +36,9 @@ end
 if ~isfield(handles,'shifted')
     handles.shifted = false;
 end
-
+handles.kymo = imread([handles.pathfile filesep handles.menu_kymo.String{handles.menu_kymo.Value}]);
+handles.int_high_lim = str2double(handles.edit_high_lim.String);
+handles.int_low_lim = str2double(handles.edit_low_lim.String);
 handles.info = kymo_read_info(handles.pathfile);
 
 % handles = kymo_update(handles);
