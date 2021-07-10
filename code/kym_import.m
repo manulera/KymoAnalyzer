@@ -22,6 +22,7 @@ function [handles] = kym_import(handles,target)
     handles.left_edge = [];
     handles.right_edge = [];
     handles.spindle_length = [];
+    handles.kymo_is_special = false;
     
     if isfield(handles,'left_membrane')
         handles = rmfield(handles,'left_membrane');

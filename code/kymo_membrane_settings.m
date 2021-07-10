@@ -13,7 +13,11 @@ function [handles] = kymo_membrane_settings(handles)
         end
 
         handles.int_low_lim = 0;
-        handles.int_high_lim = 200;
+        handles.int_high_lim = 100;
+        
+        % Set the extra plot as movie
+%         handles.menu_plot.Value = 6;
+%         handles=kymo_load_smart_kymo(handles);
     end
 end
 

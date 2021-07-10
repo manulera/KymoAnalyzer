@@ -31,7 +31,10 @@ function [] = kym_show(handles)
         xlim_high = str2double(handles.edit_xlim_high.String);
     end
     xlim([xlim_low,xlim_high])
-    hold on
+    hold(handles.ax_main,'on')
+    if isfield(handles,'kymo_is_special') && handles.kymo_is_special
+        text(handles.ax_main,[0],[5],'SPECIAL','Color','RED')
+    end
     t = round(get(handles.slider1,'Value'));
     plot(handles.ax_main,[2,size(handles.kymo,2)-1],[t t],'color','yellow')
     plot(handles.ax_main,[10,10],[10,300/handles.info.timestep],'Linewidth',4,'color','yellow')
@@ -63,6 +66,9 @@ function [] = kym_show(handles)
                 p = kl.plot_line(shifter,handles.ax_main,'green','LineWidth',3);
             else
                 p = kl.plot_line(shifter,handles.ax_main,'magenta','LineWidth',3);
+            end
+            if kl.is_special~=2 && kl.speed<0
+                kl.scatter_first(shifter,handles.ax_main);
             end
             p.Color(4) = 0.8;
         end

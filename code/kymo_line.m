@@ -40,6 +40,12 @@ methods
         p = plot(axis,abs(obj.x+shifter(obj.y)),obj.y,in_var{:});
         
     end
+    function p = scatter_first(obj,shifter,axis)
+        
+        p = scatter(axis,abs(obj.x(1)+shifter(obj.y(1))),obj.y(1),80,'MarkerFaceColor','red');
+        
+    end
+    
     function len = mt_length(obj,handles)
         % Length of the microtubule from the edge
         

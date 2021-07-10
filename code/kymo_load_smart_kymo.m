@@ -2,7 +2,11 @@ function [handles] = kymo_load_smart_kymo(handles)
     
     [handles.smart_kymo]=repeatSmartKymo(handles.pathfile);
     handles.fits = dlmread([handles.pathfile filesep 'linear_fits_smooth.txt'],' ');
-    handles.movie = readTiff([handles.pathfile filesep 'movie.tif']);
+    if handles.tog_memb.Value
+        handles.movie = readTiff([handles.pathfile filesep 'probs_membrane.tif']);
+    else
+        handles.movie = readTiff([handles.pathfile filesep 'movie.tif']);
+    end
     handles.mask = readTiff([handles.pathfile filesep 'mask.tif']);
     nb_frames = size(handles.movie,3);
     background = zeros(1,nb_frames);

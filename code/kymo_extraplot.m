@@ -44,13 +44,17 @@ function [  ] = kymo_extraplot( handles, what )
 %             ylim([yl1,yl2])
         case 'movie'
             t = round(get(handles.slider1,'Value'));
-            imshow(handles.movie(:,:,t),[handles.int_low_lim,handles.int_high_lim],'Parent',handles.ax_extra)
+            int = [handles.int_low_lim,handles.int_high_lim];
+            if handles.tog_memb.Value
+                int = [];
+            end
+            imshow(handles.movie(:,:,t),int,'Parent',handles.ax_extra)
             drawKymoLinesOnFrame(handles,t)
             return
             
     end
     xlim([0,inf])
-    ylim([0,inf])
+    ylim([-inf,inf])
 %     ylim([yl1,yl2])
 end
 

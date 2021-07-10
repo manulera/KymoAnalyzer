@@ -20,7 +20,7 @@ function [im_profiles,xx_profiles,yy_profiles] = profilesFromLines2(movie,linear
     try
         [ss,xx,yy]=multipleImprofileCurve(ima,linear_fits(i,:),profile_width,1,'bicubic');
     catch
-        error("Error in:\nframe %u\n",i)
+        error('Error in:\nframe %u\n',i)
     end
         im_profiles{i}= ss;
         xx_profiles{i}= xx;

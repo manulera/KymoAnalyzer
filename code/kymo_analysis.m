@@ -347,6 +347,8 @@ switch eventdata.Key
         handles = kymo_add_membrane_lines(handles,1);
     case '2'
         handles = kymo_add_membrane_lines(handles,0);
+    case 'w'
+        handles = kymo_select_close(handles);
 end
 
 kym_show(handles);
@@ -400,12 +402,17 @@ end
 
 % --- Executes on button press in butt_open_video.
 function butt_open_video_Callback(hObject, eventdata, handles)
-system(['open ' handles.pathfile filesep 'movie.tif']);
-% system(['open ' handles.pathfile]);
-% repeatSmartKymo(handles.pathfile);
-cd(handles.pathfile);
-system(['open ' handles.pathfile filesep 'movie_membrane.tif']);
-% check_fits('movie.tif','linear_fits_smooth.txt','mask.tif');
+if handles.tog_memb.Value
+    system(['open ' handles.pathfile filesep 'probs_membrane.tif']);
+    cd(handles.pathfile);
+else
+    system(['open ' handles.pathfile filesep 'movie.tif']);
+    % system(['open ' handles.pathfile]);
+    % repeatSmartKymo(handles.pathfile);
+    cd(handles.pathfile);
+    system(['open ' handles.pathfile filesep 'movie_membrane.tif']);
+    % check_fits('movie.tif','linear_fits_smooth.txt','mask.tif');
+end
 
 
 
@@ -472,8 +479,13 @@ end
 
 % --- Executes on button press in butt_special_kymo.
 function butt_special_kymo_Callback(hObject, eventdata, handles)
-handles.kymo_is_special=1;
+if ~isfield(handles,'kymo_is_special')
+    handles.kymo_is_special=1;
+else
+    handles.kymo_is_special=~handles.kymo_is_special;
+end
 guidata(hObject, handles);
+kym_show(handles);
 
 function edit_filter_files_Callback(hObject, eventdata, handles)
 % hObject    handle to edit_filter_files (see GCBO)
