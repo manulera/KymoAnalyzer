@@ -1,0 +1,16 @@
+found = dir(fullfile('.', ['**' filesep 'movie_membrane.tif']));
+found_folders = {found.folder};
+for i = 1:numel(found_folders)
+<<<<<<< HEAD
+    last_kymo = [found_folders{i} filesep 'membrane_mean_kymo.tif'];
+=======
+    last_kymo = [found_folders{i} filesep 'probs_membrane_kymo.tif'];
+>>>>>>> f093c0ce67beb09b5de25547341663ed1a83e3fb
+    if exist(last_kymo,'file')==2
+        fprintf('* Skipped: %s\n',found_folders{i})
+        continue
+    end
+    fprintf('> Doing kymograph %u of %u: %s\n',i,numel(found_folders),found_folders{i})
+    repeatKymographs(found_folders{i},1);
+    fprintf('done \n')
+end

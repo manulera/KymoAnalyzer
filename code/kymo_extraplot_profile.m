@@ -2,8 +2,13 @@ function [] = kymo_extraplot_profile(handles)
     t = round(get(handles.slider1,'Value'));
     col_ord = get(gca,'ColorOrder');
     
-    xx = handles.kymo(t,:);
+    xx = double(handles.kymo(t,:));
+%     xx = double(mean(handles.kymo(t-1:t+1,:)));
+    
+    % Just to not see the outside in the plot
+    xx(xx==0)=nan;
     plot(handles.ax_extra,xx,'LineWidth',2)
+    
     plot(handles.ax_extra,imgaussfilt(xx,2),'LineWidth',2)
     
 %     small_kymo = handles.kymo;
