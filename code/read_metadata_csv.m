@@ -9,6 +9,7 @@ function [value_laser] = read_metadata_csv(file)
                 if strcmp(f{1},'Laser_Intensity_491')||strcmp(f{1},'Laser_Intensity_488')
                     dummy = split(tline,',');
                     value_laser = str2double(dummy{2});
+                    fclose(fid);
                     return
                 end
 %                 disp(tline)

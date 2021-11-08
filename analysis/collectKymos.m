@@ -50,11 +50,12 @@ for set_i = 1:numel(sets)
                 error(['Folder missnamed: ' mat_files{mat_i}])
             end
 
-            % .mat files contain struct named 'out', that's why we here create an
-            % empty one before, mostly for typehinting in the script
-            out = struct();
+            
 %             fprintf('-> loading:%s %s\n',conditions{condition_i},mat_files{mat_i});
-            load(mat_files{mat_i})        
+            % We load a structure 
+            file_content = load(mat_files{mat_i});
+            out = file_content.out;
+            clear file_content
             
             % The directory where the mat file is
             mat_file_folder = fileparts(mat_files{mat_i});
@@ -64,7 +65,7 @@ for set_i = 1:numel(sets)
             % for laser power and timestep
             LP = read_metadata_csv([meta_file.folder filesep meta_file.name]);   
             if round(out.info.timestep)~=warning_if.time_step || LP~=warning_if.LP
-                warning('different settings: %s\n',meta_file.folder);
+                warning('skipped because of different settings: %s\n',meta_file.folder);
                 continue
             end
             
