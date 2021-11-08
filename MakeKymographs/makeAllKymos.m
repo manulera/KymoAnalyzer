@@ -19,7 +19,12 @@ for i = 1:numel(found_folders)
 end
 
 for i = 1:numel(folders2do)
-    fprintf('> Doing kymograph %u of %u: %s\n',i,numel(folders2do),folders2do{i})
-    makeKymographs(folders2do{i});
-    fprintf('done \n')
+    try
+        fprintf('> Doing kymograph %u of %u: %s\n',i,numel(folders2do),folders2do{i})
+        makeKymographs(folders2do{i});
+        fprintf('done \n')
+    catch
+        fprintf('> Error in kymograph %u of %u: %s\n',i,numel(folders2do),folders2do{i})
+        close all
+    end
 end

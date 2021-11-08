@@ -116,7 +116,8 @@ function [kl_data,spindle_data] = loadKymosFromMatFile(matfile, t_res, x_res)
         
         %% Annotations
         % I don't really understand why this inconsistent behaviour happens
-        if isfield(sp,'annotations') && iscell(sp.annotations) && ~isempty(sp.annotations)
+        
+        if any(strcmp('annotations',sp.Properties.VariableNames)) && iscell(sp.annotations) && ~isempty(sp.annotations)
             sp.annotations = sp.annotations{1};
         end
         

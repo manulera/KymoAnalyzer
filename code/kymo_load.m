@@ -19,6 +19,7 @@ end
 if file==0
     return
 end
+
 path
 load([path filesep file])
 
@@ -36,7 +37,8 @@ end
 if ~isfield(handles,'shifted')
     handles.shifted = false;
 end
-handles.kymo = imread([handles.pathfile filesep handles.menu_kymo.String{handles.menu_kymo.Value}]);
+handles = kymo_membrane_settings(handles);
+handles.kymo = imread([handles.pathfile filesep handles.tif_file]);
 handles.int_high_lim = str2double(handles.edit_high_lim.String);
 handles.int_low_lim = str2double(handles.edit_low_lim.String);
 handles.info = kymo_read_info(handles.pathfile);

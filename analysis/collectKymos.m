@@ -107,6 +107,7 @@ for set_i = 1:numel(sets)
                 
                 sp_length_start = out.spindle_length(kl.y(1));
                 sp_length_end = out.spindle_length(kl.y(end));
+                sp_length = out.spindle_length(kl.y);
                 duration = numel(kl.x);
                 kl_speed = kl.speed;
                 if isempty(kl.is_special)
@@ -116,7 +117,7 @@ for set_i = 1:numel(sets)
                 
                 
                 kl_data_this = {mt_length,length_start,length_end,mt_lengthVscenter,length_startVscenter,length_endVscenter,...
-                    net_growth,sp_length_start,sp_length_end,...
+                    net_growth,sp_length_start,sp_length_end,sp_length,...
                     duration,kl_speed,kl,set_i,exp_i,condition_i,mat_i,mat_files{mat_i},kl.is_special,special_kymo};
                 kl_data = [kl_data;kl_data_this];
             end
@@ -128,7 +129,7 @@ end
 %%
 spindle_data = cell2table(spindle_data,'VariableNames',{'speed','length','left_edge','right_edge','set_id','exp_id','condition_id','kymo_id','mat_file','left_membrane','right_membrane','annotations'});
 kl_data = cell2table(kl_data,'VariableNames',{'length','length_start','length_catast','length_respect2center','rescue_respect2center','catast_respect2center' ...
-    'netgrowth','length_spindle_start','length_spindle_catast',...
+    'netgrowth','length_spindle_start','length_spindle_catast','length_spindle'...
     'duration', 'speed','kl','set_id','exp_id','condition_id','kymo_id','mat_file','is_special','special_kymo'});
 %%
 
