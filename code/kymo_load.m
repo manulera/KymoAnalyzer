@@ -24,7 +24,7 @@ path
 load([path filesep file])
 
 % Copy all the fields from fout except for these
-rem_fields = {'all_kymos','pathfile','current_kymo','mini_video'};
+rem_fields = {'all_kymos','pathfile','current_kymo','mini_video','tif_file'};
 for r = rem_fields
     if isfield(out,r{1})
         out = rmfield(out,r{1});
