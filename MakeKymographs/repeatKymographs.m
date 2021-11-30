@@ -76,7 +76,7 @@ nb_frames = min([nb_frames,size(linear_fits_smooth,1)]);
 dd = dir([folder filesep '*.tif']);
 
 if membrane_only 
-    dd = dir([folder filesep 'movie_membrane.tif']);
+    dd = dir([folder filesep '*_membrane.tif']);
 end
 
 for i =1:numel(dd)

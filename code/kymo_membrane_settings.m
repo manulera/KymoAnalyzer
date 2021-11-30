@@ -12,8 +12,8 @@ function [handles] = kymo_membrane_settings(handles)
             handles.kymo = imread([handles.pathfile filesep handles.tif_file]);
         end
 
-        handles.int_low_lim = 1;
-        handles.int_high_lim = 30;
+%         handles.int_low_lim = 1;
+%         handles.int_high_lim = 30;
         
         % Set the extra plot as movie
 %         handles.menu_plot.Value = 6;

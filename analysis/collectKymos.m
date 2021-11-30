@@ -1,4 +1,8 @@
-function [kl_data,spindle_data] = collectKymos(sets,conditions,strain_numbers,warning_if)
+function [kl_data,spindle_data] = collectKymos(sets,conditions,strain_numbers,warning_if,skip_if_warning)
+
+if nargin<5||isempty(skip_if_warning)
+    skip_if_warning=true;
+end
 
 % We extract the spindle data and the kymolines data in different arrays
 
@@ -65,8 +69,12 @@ for set_i = 1:numel(sets)
             % for laser power and timestep
             LP = read_metadata_csv([meta_file.folder filesep meta_file.name]);   
             if round(out.info.timestep)~=warning_if.time_step || LP~=warning_if.LP
-                warning('skipped because of different settings: %s\n',meta_file.folder);
-                continue
+                if skip_if_warning
+                    warning('skipped because of different settings: %s\n',meta_file.folder);
+                    continue
+                else
+                    warning('different settings: %s\n',meta_file.folder);
+                end
             end
             
             % We measure the speed of elongation of the spindle on the region where

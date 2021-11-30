@@ -1,14 +1,16 @@
-function [ default_order ] = membraneUnivarScatter2( this_data,ticks,colors,ylim_val,y_pos )
+function [ default_order ] = membraneUnivarScatter2( this_data,ticks,colors,ylim_val,y_pos, settings )
     % ylim_val [0,3], y_pos = -0.7
     % We squish the groups together in the x axis
     tick_pos = [1,2,3.5,4.5,6,7];
     
-    univar_settings = {'MarkerFaceColor',colors};
-    whiskers_settings = {'Whiskers','lines','SEMColor','k','StdColor','k','MarkerEdgeColor','white','LineWidth',1,'PointSize',40};
-    univar_settings =  [whiskers_settings univar_settings {'xCenters',tick_pos}];
-    
-    
-    
+    if nargin < 6 || isempty(settings)
+        univar_settings = {'MarkerFaceColor',colors};
+        whiskers_settings = {'Whiskers','lines','SEMColor','k','StdColor','k','MarkerEdgeColor','white','LineWidth',1,'PointSize',40};
+        univar_settings =  [whiskers_settings univar_settings {'xCenters',tick_pos}];
+    else
+        univar_settings = [settings {'xCenters',tick_pos}];
+    end
+
     [~,y,default_order,~,hh]=UnivarScatter(this_data(:,{'composed_condition','speed_min'}),univar_settings{:}); 
     
     xticks(tick_pos)
