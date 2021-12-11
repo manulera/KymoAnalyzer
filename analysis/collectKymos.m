@@ -23,18 +23,18 @@ for set_i = 1:numel(sets)
     
     
     for exp_i = 1:numel(culture_folders)
-        [~,out] = system(['find ' culture_folders{exp_i} ' -type f -name "kymo_save.mat"']);
-        mat_files = strsplit(out);
-        if strcmp(mat_files{1},'find:')
+        mat_file_dir = dir(fullfile(culture_folders{exp_i}, ['**' filesep 'kymo_save.mat']));
+        if isempty(mat_file_dir)
             % If none has been found
             continue
         end
-
-        empty_ones = cellfun('isempty',mat_files);
-        mat_files = mat_files(~empty_ones);
-
+        mat_files = cell(1,numel(mat_file_dir));
+        for i = 1:numel(mat_file_dir)
+            mat_files{i} = [mat_file_dir(i).folder filesep mat_file_dir(i).name];
+        end
+        
         % Folder name corresponds to the name of the directory where the .nd
-        % file and the tifs are, which always has the name of the train in it.
+        % file and the tifs are, which always has the name of the strain in it.
         for mat_i = 1:numel(mat_files)
             folder_name = split(mat_files{mat_i},filesep);
             

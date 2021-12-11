@@ -1,15 +1,16 @@
 function [handles] = kymo_findall(handles)
 
-[~,out] = system(['find ' uigetdir() ' -type d -name "kymo_matlab*"']);
+%% Matlab version
 
-all_files = strsplit(out);
-empty_ones = cellfun('isempty',all_files);
-all_files = all_files(~empty_ones);
-% Filter for LP and timestep
-all_files2 = {};
-for i = 1:numel(all_files)
+
+found = dir(fullfile(uigetdir(), ['**' filesep 'movie_max_kymo.tif']));
+all_folders = {found.folder};
+handles.current_kymo = 1;
+filtered_folders = {};
+
+for i = 1:numel(all_folders)
     
-    f = all_files{i};
+    f = all_folders{i};
     
     meta_file = dir([f filesep '..' filesep '..' filesep '*.csv']);
     % Filtering step
@@ -27,20 +28,10 @@ for i = 1:numel(all_files)
     else
         error(['Metadata file ' metadata_file ' not found'])
     end
-    
-    
-    info = kymo_read_info(f);
-    all_files2 = [all_files2 f]; 
-%     if round(info.timestep)~=5 || LP~=22.5
-% 
-%         continue
-%     else
-%         all_files2 = [all_files2 f]; 
-%     end
-    
+    filtered_folders = [filtered_folders f];
 end
 
-handles.all_kymos = all_files2;
-numel(all_files2)
+handles.all_kymos = filtered_folders;
+numel(handles.all_kymos)
 handles.current_kymo = 1;
 end

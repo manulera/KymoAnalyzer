@@ -1,9 +1,9 @@
 function [data2predict] = membraneUnivarScatter2_errors(this_data,default_order,lm)
     xticks_values = xticks();
     % Calculate the mean and CI interval of the mean
-    data2predict = unique(this_data(:,{'condition_name','rescue_inside_membrane','experiment_names','mat_file','composed_condition'}));
+    data2predict = unique(this_data(:,{'condition','position','experiment','cell','composed_condition'}));
     [data2predict.prediction,data2predict.predictionCI,data2predict.DF] = predict(lm,data2predict,'DFMethod','satterthwaite','Conditional',false);
-    data2predict(:,{'experiment_names','mat_file'})=[];
+    data2predict(:,{'experiment','cell'})=[];
     data2predict = unique(data2predict);
     data2predict.predictionBar = data2predict.prediction-data2predict.predictionCI(:,1);
     for i = 1:numel(default_order)

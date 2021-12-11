@@ -1,4 +1,4 @@
-mode: mal3D
+mode: gfpmal3
 main_movie: probs_map.tif
 spb_coords_file: spb_coords.txt
 multiply_subsequent: 1
