@@ -1,4 +1,4 @@
-function [ default_order ] = membraneUnivarScatter2( this_data,ticks,colors,ylim_val,y_pos, settings )
+function [ default_order,RangeCut ] = membraneUnivarScatter2( this_data,ticks,colors,ylim_val,y_pos, settings )
     % ylim_val [0,3], y_pos = -0.7
     % We squish the groups together in the x axis
     tick_pos = [1,2,3.5,4.5,6,7];
@@ -11,7 +11,7 @@ function [ default_order ] = membraneUnivarScatter2( this_data,ticks,colors,ylim
         univar_settings = [settings {'xCenters',tick_pos}];
     end
 
-    [~,y,default_order,~,hh]=UnivarScatter(this_data(:,{'composed_condition','speed_min'}),univar_settings{:}); 
+    [~,y,default_order,RangeCut,hh]=UnivarScatter(this_data(:,{'composed_condition','speed_min'}),univar_settings{:}); 
     
     xticks(tick_pos)
     set(gca,'xticklabel',ticks)
@@ -24,8 +24,6 @@ function [ default_order ] = membraneUnivarScatter2( this_data,ticks,colors,ylim
     ax = gca;
     ax.XAxis.FontSize = 18;
     xtickangle(20)
-    
-    
     ylim(ylim_val)
     xlim([0,8])
     

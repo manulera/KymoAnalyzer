@@ -11,7 +11,8 @@ function [data2predict] = membraneUnivarScatter2_errors(this_data,default_order,
         y = data2predict.prediction(which_row);
         y_err = data2predict.predictionBar(which_row);
         errorbar(xticks_values(i),y,y_err,'.','MarkerSize',20,'Color','black','HandleVisibility','off','LineWidth',3)
-    %     plot(xticks_values(i)+[-0.1,0.1],[y y],'LineWidth',3,'Color','Black')
+        fprintf('%.1f %s\n',xticks_values(i), default_order{i})
+        %     plot(xticks_values(i)+[-0.1,0.1],[y y],'LineWidth',3,'Color','Black')
     end
 end
 

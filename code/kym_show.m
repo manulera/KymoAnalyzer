@@ -36,7 +36,17 @@ function [] = kym_show(handles)
         text(handles.ax_main,[0],[5],'SPECIAL','Color','RED')
     end
     t = round(get(handles.slider1,'Value'));
+    % plot horizontal line marking the time in the kymograph
     plot(handles.ax_main,[2,size(handles.kymo,2)-1],[t t],'color','yellow')
+    
+    % plot 2 horizontal lines marking the velocity section in the
+    % kymograph
+    if isfield(handles,'velocity_section')
+        for ii = 1:2
+            plot(handles.ax_main,[2,size(handles.kymo,2)-1],handles.velocity_section(ii)*[1 1],'color','green')
+        end
+    end
+    
     plot(handles.ax_main,[10,10],[10,300/handles.info.timestep],'Linewidth',4,'color','yellow')
     text(handles.ax_main,[10],[5],'5 min','Color','yellow')
     text(handles.ax_main,[30],[5],num2str(t),'Color','yellow')

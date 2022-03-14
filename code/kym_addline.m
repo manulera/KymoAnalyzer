@@ -16,28 +16,23 @@ function [h] = kym_addline(h,is_special)
     h.kymo_lines{end}.calc_speed(h);
     
     % Automatically assing left right based on the speed.
-    
-    switch is_special
-        % For a normal one assign the one with highest speed
-        case 0
-            if h.kymo_lines{end}.speed<0
-                kymo_reassing_line(h,~h.kymo_lines{end}.isleft);
-            end
-        % For a special one (not clear end or begining, tipically slow),
-        % assign to the closest pole
-        case 1
-            % First timepoint of the line
-            x1 = h.kymo_lines{end}.x(1);
-            y1 = h.kymo_lines{end}.y(1);
-            if abs(x1-h.left_edge.x(y1)) < abs(x1-h.right_edge.x(y1))
-                kymo_reassing_line(h,true);
-            else
-                kymo_reassing_line(h,false);
-            end
-        case 2
-            if h.kymo_lines{end}.speed>0
-                kymo_reassing_line(h,~h.kymo_lines{end}.isleft);
-            end
+    % For a normal one assign the one with highest speed
+    if is_special == 0 || is_special == 1
+        speed_before = h.kymo_lines{end}.speed;
+        kymo_reassing_line(h,~h.kymo_lines{end}.isleft)
+        speed_inverted = h.kymo_lines{end}.speed;
+        if speed_before > speed_inverted
+            kymo_reassing_line(h,~h.kymo_lines{end}.isleft)
+        end
+
+    % For a shrinking one assign the one with smallest (more negative) speed
+    elseif is_special == 2
+        speed_before = h.kymo_lines{end}.speed;
+        kymo_reassing_line(h,~h.kymo_lines{end}.isleft)
+        speed_inverted = h.kymo_lines{end}.speed;
+        if speed_before < speed_inverted
+            kymo_reassing_line(h,~h.kymo_lines{end}.isleft)
+        end
     end
 
 end

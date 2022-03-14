@@ -94,6 +94,11 @@ for set_i = 1:numel(sets)
                 annotations = readConfigFile(annotations_file);
             end
             
+            annotations.velocity_section = [];
+            if isfield(out,'velocity_section')
+                annotations.velocity_section = out.velocity_section;
+            end
+            
             % Spindle data
             sp_data_this = {spindle_speed, out.spindle_length, out.left_edge,out.right_edge,set_i,exp_i,condition_i,mat_i,mat_files{mat_i},left_membrane,right_membrane,annotations};
             spindle_data = [spindle_data;sp_data_this];

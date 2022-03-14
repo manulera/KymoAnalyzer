@@ -349,6 +349,11 @@ switch eventdata.Key
         handles = kymo_add_membrane_lines(handles,0);
     case 'w'
         handles = kymo_select_close(handles);
+    case 't'
+        handles = kymo_add_velocity_section(handles);
+    case '0'
+        handles = rmfield(handles,'left_membrane');
+        handles = rmfield(handles,'right_membrane');
 end
 
 kym_show(handles);

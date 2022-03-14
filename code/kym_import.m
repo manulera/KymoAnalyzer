@@ -30,6 +30,9 @@ function [handles] = kym_import(handles,target)
     if isfield(handles,'right_membrane')
         handles = rmfield(handles,'right_membrane');
     end
+    if isfield(handles,'velocity_section')
+        handles = rmfield(handles,'velocity_section');
+    end
         
 end
 
